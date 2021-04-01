@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        body {
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: none;
+            -moz-user-select: none;
+            background: #fafafc
+        }
+
+        .icon,.icon-global {
+            margin-right: 7px;
+            vertical-align: middle
+        }
+        body,html {
+            font: 400 16px/1.5 PingFangSC-regular,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei
+        }
+
+        .nav-entry .col>a em,.nav-entry .wallet,.noimg i,.subNav-entry .col a em {
+            font-style: normal
+        }
+
+        img {
+            border: none
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        h2 a:link,h2 a:visited,h3 a:link,h3 a:visited {
+            color: #fff
+        }
+
+        li {
+            list-style-type: none
+        }
+        #text-input{
+            width: 1280px;
+            margin: 0 auto;
+            height: 500px;
+        }
+        #submit{
+            display: inline-block;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            background-color: cornflowerblue;
+            text-align: center;
+            border-radius: 10px;
+        }
+    </style>
+               
+    <body>
+        <textarea id="text-input" oninput="this.editor.update()" rows="6" cols="60">Type **Markdown** here.</textarea>
+        <span>文件名称：</span> <input id="filename" type="text" name="" id="" value="123">
+        <a id="submit" onclick="saveFile()">保存</a>
+        <div id="preview"></div>
+        <script src="markdown.js"></script>
+        <script>
+            function saveFile() {
+                var btn = document.getElementById('submit');
+                var name = document.getElementById('filename').value;
+                var markdowncontent = document.getElementById('text-input').innerHTML
+                btn.download = name + '.md';
+                var blob = new Blob([markdowncontent], {type: "text/txt"});
+                var content = URL.createObjectURL(blob);
+                btn.href = content;
+                //btn.textContent = "download";
+            }
+
+            function Editor(input, preview) {
+                this.update = function() {
+                    preview.innerHTML = markdown.toHTML(input.value);
+                };
+                input.editor = this;
+                this.update();
+            }
+            var $ = function(id) {
+                return document.getElementById(id);
+            };
+
+            new Editor($("text-input"), $("preview"));
+        </script>
+    </body>
+
+</html>
